@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  nickname  String
+  avatar    String   @default("default")
+  level     Int      @default(1)
+  exp       Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Room {
+  id         String     @id @default(cuid())
+  code       String     @unique
+  name       String
+  hostId     String
+  status     RoomStatus @default(WAITING)
+  maxPlayers Int        @default(8)
+  duration   Int        @default(600)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+enum RoomStatus {
+  WAITING
+  PLAYING
+  FINISHED
+}
