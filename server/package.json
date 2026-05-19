@@ -7,8 +7,8 @@
     "build": "tsc",
     "start": "tsx src/index.ts",
     "db:setup": "prisma migrate dev --name init",
-    "postinstall": "prisma generate",
-    "migrate": "prisma migrate deploy"
+    "postinstall": "npx --yes prisma@6.19.3 generate",
+    "migrate": "npx --yes prisma@6.19.3 migrate deploy"
   },
   "dependencies": {
     "@prisma/client": "6.19.3",
