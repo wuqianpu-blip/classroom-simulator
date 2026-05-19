@@ -23,8 +23,8 @@ export class SleepScene extends Phaser.Scene {
     const cx = W / 2, cy = H / 2;
     const theme = DREAM_THEMES[this.themeKey];
 
-    this.add.rectangle(cx, cy, W, H, 0x0f0f23, 0.95).setCornerRadius(16);
-    this.add.rectangle(cx, cy, W, H, 0x000000, 0).setStrokeStyle(2, 0xa78bfa).setCornerRadius(16);
+    this.add.rectangle(cx, cy, W, H, 0x0f0f23, 0.95).setRounded(16);
+    this.add.rectangle(cx, cy, W, H, 0x000000, 0).setStrokeStyle(2, 0xa78bfa).setRounded(16);
 
     const stars = ['✦', '✧', '⭐', '🌟', '✨'];
     stars.forEach((s) => {

@@ -15,7 +15,7 @@ interface PhaserGameProps {
   timeLeft?: number;
 }
 
-export function PhaserGame({ roomCode, role, timeLeft }: PhaserGameProps) {
+export function PhaserGame({ role, timeLeft }: PhaserGameProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<Phaser.Game | null>(null);
 

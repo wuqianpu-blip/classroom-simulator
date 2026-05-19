@@ -1,5 +1,3 @@
-import Phaser from 'phaser';
-
 export interface DreamTheme {
   name: string;
   bgColor: string;

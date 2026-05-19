@@ -24,7 +24,7 @@ const ACTION_DURATIONS: Record<StudentAction, number> = {
 export interface ActionEvent {
   type: 'action_start' | 'action_end' | 'risk_change' | 'caught' | 'step_complete' | 'action_complete';
   playerId: string;
-  action: StudentAction | string;
+  action?: StudentAction | string;
   value?: number;
   message?: string;
 }
@@ -69,7 +69,7 @@ export class ActionManager {
 
     data.currentAction = action;
     data.actionTimer = 0;
-    data.character.setState(action);
+    data.character.setCharacterState(action);
 
     this.emit('action_start', { playerId, action });
     return true;

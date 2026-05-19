@@ -11,7 +11,7 @@ export class BootScene extends Phaser.Scene {
     const w = this.cameras.main.width;
     const h = this.cameras.main.height;
 
-    const bar = this.add.rectangle(w / 2, h / 2, 200, 20, 0x333333);
+    this.add.rectangle(w / 2, h / 2, 200, 20, 0x333333);
     const fill = this.add.rectangle(w / 2 - 100, h / 2, 0, 18, 0xec4899);
     fill.setOrigin(0, 0.5);
 

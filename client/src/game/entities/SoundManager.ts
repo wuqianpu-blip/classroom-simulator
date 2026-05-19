@@ -5,7 +5,6 @@ class SoundManager {
   private gainNode: GainNode | null = null;
   private ambientGain: GainNode | null = null;
   private ambientOsc: OscillatorNode | null = null;
-  private ambientNoise: AudioBufferSourceNode | null = null;
   private enabled = true;
   private volume = 0.3;
 

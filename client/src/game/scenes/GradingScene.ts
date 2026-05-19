@@ -34,8 +34,8 @@ export class GradingScene extends Phaser.Scene {
   create() {
     const cx = W / 2, cy = H / 2;
 
-    this.add.rectangle(cx, cy, W, H, 0x0f0f23, 0.92).setCornerRadius(16);
-    this.add.rectangle(cx, cy, W, H, 0x000000, 0).setStrokeStyle(2, 0xfbbf24).setCornerRadius(16);
+    this.add.rectangle(cx, cy, W, H, 0x0f0f23, 0.92).setRounded(16);
+    this.add.rectangle(cx, cy, W, H, 0x000000, 0).setStrokeStyle(2, 0xfbbf24).setRounded(16);
 
     this.add.text(cx, 20, '📝 批改作业', {
       fontSize: '18px', color: '#fbbf24', fontFamily: '"Segoe UI", sans-serif', fontStyle: 'bold',
@@ -45,7 +45,7 @@ export class GradingScene extends Phaser.Scene {
       fontSize: '12px', color: '#64748b', fontFamily: 'monospace',
     }).setOrigin(0.5);
 
-    this.paperBg = this.add.rectangle(cx, cy - 10, W - 60, 140, 0x1e293b, 0.9).setCornerRadius(12);
+    this.paperBg = this.add.rectangle(cx, cy - 10, W - 60, 140, 0x1e293b, 0.9).setRounded(12);
     this.paperBg.setStrokeStyle(2, 0x475569);
 
     this.add.text(cx, cy - 50, '📄 同学作业', {

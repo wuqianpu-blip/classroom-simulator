@@ -40,9 +40,8 @@ export class ClassroomScene extends Phaser.Scene {
   private skillManager!: TeacherSkillManager;
   private eventLog: Phaser.GameObjects.Text[] = [];
   private riskBars: Map<string, Phaser.GameObjects.Graphics> = new Map();
-  private caughtOverlays: Map<string, Phaser.GameObjects.Container> = new Map();
   private progressBar!: Phaser.GameObjects.Graphics;
-  private teachingTimer = 0;
+
   private skillUiTexts: Phaser.GameObjects.Text[] = [];
   private isTeacherMode = false;
   private lastScanHighlight: Phaser.GameObjects.Graphics | null = null;
@@ -211,7 +210,7 @@ export class ClassroomScene extends Phaser.Scene {
     this.logEvent('🔍 老师使用了鹰眼扫描！');
     if (this.lastScanHighlight) this.lastScanHighlight.destroy();
 
-    this.students.forEach((student, i) => {
+    this.students.forEach((student) => {
       const action = this.actionManager.getAction(student.playerId);
       if (action !== 'idle') {
         const glow = this.add.graphics();
@@ -400,7 +399,7 @@ export class ClassroomScene extends Phaser.Scene {
     this.add.text(cx, 78, '静夜思  —  李白', { fontSize: '13px', color: '#94a3b8', fontFamily: '"SimSun", serif' }).setOrigin(0.5);
 
     this.add.rectangle(cx, 130, 130, 40, 0x6366f1).setStrokeStyle(1, 0x818cf8);
-    this.add.rectangle(W - 50, 45, 24, 24, 0x334155).setStrokeStyle(1, 0x64748b).setCornerRadius(12);
+    this.add.rectangle(W - 50, 45, 24, 24, 0x334155).setStrokeStyle(1, 0x64748b).setRounded(12);
     this.add.text(W - 50, 45, '🕐', { fontSize: '14px' }).setOrigin(0.5);
     this.add.text(cx, 108, '好 好 学 习 · 天 天 向 上', { fontSize: '10px', color: '#64748b', fontFamily: '"SimSun", serif' }).setOrigin(0.5);
   }
@@ -412,7 +411,7 @@ export class ClassroomScene extends Phaser.Scene {
         this.seats.push({ x, y, col: ci, row: ri, occupied: false });
         this.add.rectangle(x, y, 50, 28, 0x7c3aed).setStrokeStyle(1, 0x9d7aeb);
         this.add.rectangle(x, y - 1, 44, 22, 0x8b5cf6);
-        this.add.rectangle(x - 16, y + 24, 16, 10, 0x6d28d9).setCornerRadius(3);
+        this.add.rectangle(x - 16, y + 24, 16, 10, 0x6d28d9).setRounded(3);
       }
     });
   }
@@ -503,7 +502,7 @@ export class ClassroomScene extends Phaser.Scene {
     if (!student) return;
     const overlay = this.add.container(student.x, student.y - 20).setDepth(50);
     overlay.add([
-      this.add.rectangle(0, 0, 80, 28, 0xef4444, 0.9).setCornerRadius(8),
+      this.add.rectangle(0, 0, 80, 28, 0xef4444, 0.9).setRounded(8),
       this.add.text(0, 0, '🚨 被抓住了！', { fontSize: '11px', color: '#fff', fontFamily: '"Segoe UI", sans-serif', fontStyle: 'bold' }).setOrigin(0.5),
     ]);
     this.tweens.add({ targets: overlay, y: overlay.y - 30, alpha: 0, duration: 2000, onComplete: () => overlay.destroy() });

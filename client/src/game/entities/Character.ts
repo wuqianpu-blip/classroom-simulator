@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 export type CharacterRole = 'teacher' | 'student';
-export type CharacterState = 'idle' | 'walk' | 'sleep' | 'phone' | 'eat';
+export type CharacterState = 'idle' | 'walk' | 'sleep' | 'phone' | 'eat' | 'note' | 'read';
 
 const COLORS = {
   student: {
@@ -73,7 +73,7 @@ export class Character extends Phaser.GameObjects.Container {
     }).setOrigin(0.5, 0).setAlpha(0.8);
     this.add(this.nameLabel);
 
-    scene.add.existing(this);
+    (scene.add as any).existing(this);
     this.startIdleAnimation();
   }
 
@@ -91,7 +91,7 @@ export class Character extends Phaser.GameObjects.Container {
       delay: 3000 + Math.random() * 4000,
       callback: () => {
         if (this.role === 'student') {
-          const blink = this.scene.tweens.add({
+          this.scene.tweens.add({
             targets: [this.eyeL, this.eyeR],
             scaleY: 0,
             duration: 80,
@@ -103,7 +103,7 @@ export class Character extends Phaser.GameObjects.Container {
     });
   }
 
-  setState(state: CharacterState) {
+  setCharacterState(state: CharacterState) {
     this.eyeL.setScale(1);
     this.eyeR.setScale(1);
 

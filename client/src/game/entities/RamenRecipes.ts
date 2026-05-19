@@ -1,6 +1,4 @@
-import Phaser from 'phaser';
-
-interface RamenFlavor {
+export interface RamenFlavor {
   id: string;
   name: string;
   emoji: string;

@@ -35,8 +35,8 @@ export class RamenScene extends Phaser.Scene {
   create() {
     const cx = W / 2, cy = H / 2;
 
-    this.add.rectangle(cx, cy, W, H, 0x000000, 0.75).setCornerRadius(16);
-    this.add.rectangle(cx, cy, W, H, 0x000000, 0).setStrokeStyle(2, this.flavor.color).setCornerRadius(16);
+    this.add.rectangle(cx, cy, W, H, 0x000000, 0.75).setRounded(16);
+    this.add.rectangle(cx, cy, W, H, 0x000000, 0).setStrokeStyle(2, parseInt(this.flavor.color.replace('#', ''), 16)).setRounded(16);
 
     // 标题
     this.add.text(cx, 18, `${this.flavor.emoji} ${this.flavor.name}`, {

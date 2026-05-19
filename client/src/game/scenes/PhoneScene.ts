@@ -27,8 +27,8 @@ export class PhoneScene extends Phaser.Scene {
   create() {
     const cx = W / 2, cy = H / 2;
 
-    this.add.rectangle(cx, cy, W, H, 0x000000, 0.85).setCornerRadius(16);
-    this.add.rectangle(cx, cy, W, H, 0x000000, 0).setStrokeStyle(2, 0x60a5fa).setCornerRadius(16);
+    this.add.rectangle(cx, cy, W, H, 0x000000, 0.85).setRounded(16);
+    this.add.rectangle(cx, cy, W, H, 0x000000, 0).setStrokeStyle(2, 0x60a5fa).setRounded(16);
 
     this.add.text(cx, 20, '📱 玩手机', {
       fontSize: '18px', color: '#60a5fa', fontFamily: '"Segoe UI", sans-serif', fontStyle: 'bold',

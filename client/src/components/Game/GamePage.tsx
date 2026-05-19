@@ -22,9 +22,9 @@ export function GamePage() {
   const { user } = useAuthStore();
   const { setPlayers } = useRoomStore();
   const [role, setRole] = useState<'teacher' | 'student'>('student');
-  const [gameState, setGameState] = useState<'waiting' | 'playing' | 'finished'>('waiting');
+  const [, setGameState] = useState<'waiting' | 'playing' | 'finished'>('waiting');
   const [timeLeft, setTimeLeft] = useState(600);
-  const [results, setResults] = useState<GameResult[]>([]);
+  const [, setResults] = useState<GameResult[]>([]);
   const socket = getSocket();
 
   useEffect(() => {

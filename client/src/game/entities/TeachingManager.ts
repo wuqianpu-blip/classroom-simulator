@@ -52,14 +52,12 @@ export class TeachingManager {
   private totalTasks = 12;
   private currentQuizIndex = 0;
   private onProgressChange?: (pct: number) => void;
-  private onTaskAvailable?: (quiz: QuizTask) => void;
 
   get progress(): number {
     return Math.min(100, Math.round((this.completedTasks / this.totalTasks) * 100));
   }
 
   set onProgress(fn: (pct: number) => void) { this.onProgressChange = fn; }
-  set onTask(fn: (quiz: QuizTask) => void) { this.onTaskAvailable = fn; }
 
   completeTask(success: boolean) {
     if (success) this.completedTasks++;

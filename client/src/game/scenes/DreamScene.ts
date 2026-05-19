@@ -131,8 +131,8 @@ export class DreamScene extends Phaser.Scene {
 
   private buildCarousel(cx: number, cy: number) {
     const c = this.add.container(cx, cy);
-    c.add(this.add.rectangle(0, 20, 60, 8, 0xec4899, 0.6).setCornerRadius(4));
-    c.add(this.add.rectangle(0, -20, 55, 6, 0xf472b6, 0.7).setCornerRadius(3));
+    c.add(this.add.rectangle(0, 20, 60, 8, 0xec4899, 0.6).setRounded(4));
+    c.add(this.add.rectangle(0, -20, 55, 6, 0xf472b6, 0.7).setRounded(3));
     const animals = ['🐴', '🦄', '🐯', '🐰'];
     animals.forEach((a, i) => {
       const angle = (i / 4) * Math.PI * 2;
@@ -231,7 +231,7 @@ export class DreamScene extends Phaser.Scene {
   private showDialog(message: string) {
     if (this.dialogBox) this.dialogBox.destroy();
     const cx = W / 2, cy = H / 2 + 80;
-    const bg = this.add.rectangle(cx, cy, 350, 80, 0x0f0f2e, 0.92).setCornerRadius(12).setStrokeStyle(1, 0x818cf8);
+    const bg = this.add.rectangle(cx, cy, 350, 80, 0x0f0f2e, 0.92).setRounded(12).setStrokeStyle(1, 0x818cf8);
     const text = this.add.text(cx, cy, message, { fontSize: '11px', color: '#e2e8f0', fontFamily: '"Segoe UI", sans-serif', align: 'center', lineSpacing: 4 }).setOrigin(0.5);
     const closeBtn = this.add.text(cx + 155, cy - 30, '✕', { fontSize: '14px', color: '#64748b' }).setOrigin(0.5).setInteractive({ useHandCursor: true });
     this.dialogBox = this.add.container(0, 0, [bg, text, closeBtn]).setDepth(100);
