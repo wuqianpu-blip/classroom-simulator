@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
 import { AuthPage } from './components/Auth/AuthPage';
@@ -7,18 +6,12 @@ import { GamePage } from './components/Game/GamePage';
 import { ResultPage } from './components/Game/ResultPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user, token } = useAuthStore();
-  if (!token || !user) return <Navigate to="/" replace />;
+  const { nickname } = useAuthStore();
+  if (!nickname) return <Navigate to="/" replace />;
   return <>{children}</>;
 }
 
 function App() {
-  const { checkAuth, token } = useAuthStore();
-
-  useEffect(() => {
-    if (token) checkAuth();
-  }, []);
-
   return (
     <BrowserRouter>
       <Routes>

@@ -1,10 +1,7 @@
-export interface User {
-  id: string;
-  username: string;
+export interface PlayerInRoom {
+  userId: string;
   nickname: string;
-  avatar: string;
-  level: number;
-  exp: number;
+  ready: boolean;
 }
 
 export interface Room {
@@ -12,16 +9,9 @@ export interface Room {
   code: string;
   name: string;
   hostId: string;
-  status: 'WAITING' | 'PLAYING' | 'FINISHED';
+  playerCount: number;
   maxPlayers: number;
+  status: 'WAITING' | 'PLAYING' | 'FINISHED';
   duration: number;
   createdAt: string;
-  updatedAt: string;
-}
-
-export interface PlayerInRoom {
-  userId: string;
-  nickname: string;
-  avatar: string;
-  ready: boolean;
 }

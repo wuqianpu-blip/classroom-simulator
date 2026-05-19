@@ -5,7 +5,7 @@ import { connectSocket, getSocket } from '../../services/socket';
 import { useNavigate } from 'react-router-dom';
 
 export function LobbyPage() {
-  const { user, logout } = useAuthStore();
+  const { nickname, userId, clear } = useAuthStore();
   const { rooms, currentRoom, fetchRooms, createRoom, setCurrentRoom, players, setPlayers } = useRoomStore();
   const [showCreate, setShowCreate] = useState(false);
   const [roomName, setRoomName] = useState('');
@@ -42,7 +42,7 @@ export function LobbyPage() {
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
     if (!roomName.trim()) return;
-    const room = await createRoom(roomName);
+    const room = await createRoom(roomName, userId, nickname);
     setShowCreate(false);
     setRoomName('');
     joinRoom(room.code);
@@ -52,7 +52,7 @@ export function LobbyPage() {
     connectSocket();
     socket.emit('room:join', {
       roomCode: code,
-      user: { userId: user?.id, nickname: user?.nickname, avatar: user?.avatar },
+      user: { userId, nickname },
     });
     setInRoom(true);
   };
@@ -74,7 +74,7 @@ export function LobbyPage() {
     socket.emit('room:start');
   };
 
-  const isHost = players[0]?.userId === user?.id;
+  const isHost = players[0]?.userId === userId;
   const allReady = players.length >= 2 && players.every((p) => p.ready);
 
   const boxStyle = {
@@ -142,7 +142,7 @@ export function LobbyPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <div style={{
                     width: '32px', height: '32px', borderRadius: '50%',
-                    background: p.userId === user?.id ? 'linear-gradient(135deg, #ec4899, #8b5cf6)' : 'rgba(255,255,255,0.1)',
+                    background: p.userId === userId ? 'linear-gradient(135deg, #ec4899, #8b5cf6)' : 'rgba(255,255,255,0.1)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: '13px', color: '#fff', fontWeight: 600,
                   }}>
@@ -150,7 +150,7 @@ export function LobbyPage() {
                   </div>
                   <div>
                     <div style={{ color: '#e2e8f0', fontSize: '14px', fontWeight: 500 }}>
-                      {p.nickname} {p.userId === user?.id && '(我)'}
+                      {p.nickname} {p.userId === userId && '(我)'}
                     </div>
                     {i === 0 && <div style={{ color: '#818cf8', fontSize: '11px' }}>👩‍🏫 房主</div>}
                   </div>
@@ -202,9 +202,9 @@ export function LobbyPage() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <span style={{ color: '#94a3b8', fontSize: '14px' }}>
-              {user?.nickname} <span style={{ color: '#c084fc' }}>Lv.{user?.level}</span>
+              {nickname}
             </span>
-            <button onClick={logout} style={{
+            <button onClick={clear} style={{
               padding: '8px 14px', border: '1px solid rgba(255,255,255,0.15)',
               borderRadius: '8px', background: 'rgba(255,255,255,0.05)',
               color: '#94a3b8', cursor: 'pointer', fontSize: '13px',

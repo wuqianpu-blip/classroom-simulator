@@ -19,7 +19,7 @@ interface GameResult {
 export function GamePage() {
   const { roomCode } = useParams<{ roomCode: string }>();
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { nickname, userId } = useAuthStore();
   const { setPlayers } = useRoomStore();
   const [role, setRole] = useState<'teacher' | 'student'>('student');
   const [, setGameState] = useState<'waiting' | 'playing' | 'finished'>('waiting');
@@ -28,11 +28,11 @@ export function GamePage() {
   const socket = getSocket();
 
   useEffect(() => {
-    if (!roomCode || !user) return;
+    if (!roomCode || !userId) return;
 
     socket.emit('room:join', {
       roomCode,
-      user: { userId: user.id, nickname: user.nickname, avatar: user.avatar },
+      user: { userId, nickname },
     });
 
     socket.on('room:players', (data) => {
@@ -40,7 +40,7 @@ export function GamePage() {
     });
 
     socket.on('game:start', (data) => {
-      setRole(data.teacherId === user.id ? 'teacher' : 'student');
+      setRole(data.teacherId === userId ? 'teacher' : 'student');
       setGameState('playing');
       setTimeLeft(data.duration);
     });
@@ -76,7 +76,7 @@ export function GamePage() {
       socket.off('game:finished');
       disconnectSocket();
     };
-  }, [roomCode, user]);
+  }, [roomCode, userId]);
 
   const handleLeave = () => {
     navigate('/lobby');

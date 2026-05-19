@@ -14,7 +14,7 @@ interface GameResult {
 export function ResultPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { userId } = useAuthStore();
   const results = (location.state as any)?.results as GameResult[] || [];
   const roomCode = (location.state as any)?.roomCode || '';
 
@@ -22,7 +22,7 @@ export function ResultPage() {
   const [coinsEarned, setCoinsEarned] = useState(0);
 
   useEffect(() => {
-    const myResult = results.find((r) => r.userId === user?.id);
+    const myResult = results.find((r) => r.userId === userId);
     if (myResult) {
       if (myResult.role === 'teacher') {
         const progress = myResult.teachingProgress || 0;
@@ -35,7 +35,7 @@ export function ResultPage() {
         setCoinsEarned(Math.round(riskBonus * 0.3 - caughtPenalty * 0.3 + 5));
       }
     }
-  }, [results, user]);
+  }, [results, userId]);
 
   const grade = (xp: number): { label: string; color: string; stars: string } => {
     if (xp >= 50) return { label: 'S', color: '#fbbf24', stars: '⭐⭐⭐' };
@@ -44,7 +44,7 @@ export function ResultPage() {
     return { label: 'C', color: '#94a3b8', stars: '' };
   };
 
-  const myResult = results.find((r) => r.userId === user?.id);
+  const myResult = results.find((r) => r.userId === userId);
   const gradeInfo = grade(xpEarned);
 
   return (
@@ -144,7 +144,7 @@ export function ResultPage() {
             <div key={r.userId} style={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               padding: '10px 14px', marginBottom: '4px', borderRadius: '8px',
-              background: r.userId === user?.id ? 'rgba(139,92,246,0.15)' : 'rgba(255,255,255,0.03)',
+              background: r.userId === userId ? 'rgba(139,92,246,0.15)' : 'rgba(255,255,255,0.03)',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span style={{ color: '#64748b', fontSize: '13px' }}>#{i + 1}</span>

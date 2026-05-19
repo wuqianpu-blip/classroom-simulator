@@ -3,7 +3,6 @@ import cors from 'cors';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
 import { config } from './config';
-import { authRouter } from './routes/auth';
 import { roomRouter } from './routes/rooms';
 import { setupSocketHandlers } from './socket';
 
@@ -16,7 +15,6 @@ const io = new Server(httpServer, {
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/auth', authRouter);
 app.use('/api/rooms', roomRouter);
 
 app.get('/api/health', (_req, res) => {

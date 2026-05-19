@@ -3,29 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "start": "npx --yes prisma@6.19.3 generate && npx --yes prisma@6.19.3 migrate deploy && npx --yes tsx@4.19.0 src/index.ts",
-    "db:setup": "prisma migrate dev --name init"
+    "dev": "npx --yes tsx@4.19.0 watch src/index.ts",
+    "start": "npx --yes tsx@4.19.0 src/index.ts"
   },
   "dependencies": {
-    "@prisma/client": "6.19.3",
-    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
-    "dotenv": "^17.4.2",
     "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "socket.io": "^4.8.3",
-    "zod": "^3.23.0",
-    "tsx": "^4.19.0",
-    "prisma": "6.19.3",
-    "@types/node": "^24.0.0"
-  },
-  "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.2",
-    "@types/jsonwebtoken": "^9.0.9",
-    "typescript": "^5.8.0"
+    "socket.io": "^4.8.3"
   }
 }

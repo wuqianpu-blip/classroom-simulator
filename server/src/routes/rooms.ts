@@ -1,70 +1,71 @@
-import { Router, type Request } from 'express';
-import { PrismaClient } from '@prisma/client';
-import { z } from 'zod';
-import { authMiddleware, type AuthRequest } from '../middleware/auth';
+import { Router } from 'express';
 
-const prisma = new PrismaClient();
-export const roomRouter: Router = Router();
+interface Player {
+  id: string;
+  nickname: string;
+}
 
-const createRoomSchema = z.object({
-  name: z.string().min(1).max(30),
-  maxPlayers: z.number().min(2).max(16).default(8),
-  duration: z.number().min(60).max(1800).default(600),
-});
+interface Room {
+  id: string;
+  code: string;
+  name: string;
+  hostId: string;
+  players: Player[];
+  status: 'WAITING' | 'PLAYING' | 'FINISHED';
+  maxPlayers: number;
+  duration: number;
+  createdAt: Date;
+}
+
+const rooms = new Map<string, Room>();
 
 function generateCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  return Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  let code = '';
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
 }
 
-roomRouter.post('/', authMiddleware, async (req: AuthRequest, res) => {
-  try {
-    const { name, maxPlayers, duration } = createRoomSchema.parse(req.body);
-    let code: string;
-    let attempts = 0;
-    do {
-      code = generateCode();
-      const existing = await prisma.room.findUnique({ where: { code } });
-      if (!existing) break;
-      attempts++;
-    } while (attempts < 10);
+export const roomRouter: Router = Router();
 
-    const room = await prisma.room.create({
-      data: { name, code, maxPlayers, duration, hostId: req.userId! },
-    });
-    res.json({ room });
-  } catch (err) {
-    if (err instanceof z.ZodError) {
-      res.status(400).json({ error: err.errors[0].message });
-      return;
-    }
-    res.status(500).json({ error: 'Internal server error' });
-  }
+roomRouter.get('/', (_req, res) => {
+  const list = Array.from(rooms.values())
+    .filter((r) => r.status === 'WAITING')
+    .map(({ id, code, name, hostId, players, status, maxPlayers, duration, createdAt }) => ({
+      id, code, name, hostId,
+      playerCount: players.length,
+      maxPlayers, status, duration, createdAt,
+    }));
+  res.json({ rooms: list });
 });
 
-roomRouter.get('/', authMiddleware, async (_req: AuthRequest, res) => {
-  try {
-    const rooms = await prisma.room.findMany({
-      where: { status: 'WAITING' },
-      orderBy: { createdAt: 'desc' },
-      take: 50,
-    });
-    res.json({ rooms });
-  } catch {
-    res.status(500).json({ error: 'Internal server error' });
-  }
+roomRouter.get('/:code', (req, res) => {
+  const room = Array.from(rooms.values()).find((r) => r.code === req.params.code);
+  if (!room) { res.status(404).json({ error: 'Room not found' }); return; }
+  res.json({ room: { ...room, players: room.players } });
 });
 
-roomRouter.get('/:id', authMiddleware, async (req: AuthRequest, res) => {
-  try {
-    const id = req.params.id as string;
-    const room = await prisma.room.findUnique({ where: { id } });
-    if (!room) {
-      res.status(404).json({ error: 'Room not found' });
-      return;
-    }
-    res.json({ room });
-  } catch {
-    res.status(500).json({ error: 'Internal server error' });
+roomRouter.post('/', (req, res) => {
+  const { name, hostId, hostNickname, maxPlayers = 8, duration = 600 } = req.body;
+  if (!name || !hostId || !hostNickname) {
+    res.status(400).json({ error: 'Missing required fields' });
+    return;
   }
+
+  let code = generateCode();
+  while (Array.from(rooms.values()).some((r) => r.code === code)) code = generateCode();
+
+  const room: Room = {
+    id: `room_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+    code,
+    name,
+    hostId,
+    players: [{ id: hostId, nickname: hostNickname }],
+    status: 'WAITING',
+    maxPlayers,
+    duration,
+    createdAt: new Date(),
+  };
+  rooms.set(room.id, room);
+  res.json({ room: { ...room, players: room.players } });
 });

@@ -9,7 +9,7 @@ interface RoomState {
   loading: boolean;
   error: string | null;
   fetchRooms: () => Promise<void>;
-  createRoom: (name: string, maxPlayers?: number, duration?: number) => Promise<Room>;
+  createRoom: (name: string, hostId: string, hostNickname: string, maxPlayers?: number, duration?: number) => Promise<Room>;
   setCurrentRoom: (room: Room | null) => void;
   setPlayers: (players: PlayerInRoom[]) => void;
 }
@@ -31,8 +31,8 @@ export const useRoomStore = create<RoomState>((set) => ({
     }
   },
 
-  createRoom: async (name, maxPlayers = 8, duration = 600) => {
-    const { room } = await api.rooms.create({ name, maxPlayers, duration });
+  createRoom: async (name: string, hostId: string, hostNickname: string, maxPlayers = 8, duration = 600) => {
+    const { room } = await api.rooms.create({ name, hostId, hostNickname, maxPlayers, duration });
     set((state) => ({ rooms: [room, ...state.rooms], currentRoom: room }));
     return room;
   },
