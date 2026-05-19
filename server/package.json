@@ -5,10 +5,8 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "tsx src/index.ts",
-    "db:setup": "prisma migrate dev --name init",
-    "postinstall": "npx --yes prisma@6.19.3 generate",
-    "migrate": "npx --yes prisma@6.19.3 migrate deploy"
+    "start": "npx --yes prisma@6.19.3 generate && npx --yes prisma@6.19.3 migrate deploy && tsx src/index.ts",
+    "db:setup": "prisma migrate dev --name init"
   },
   "dependencies": {
     "@prisma/client": "6.19.3",
