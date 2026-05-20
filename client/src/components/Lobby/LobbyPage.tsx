@@ -11,6 +11,7 @@ export function LobbyPage() {
   const [roomName, setRoomName] = useState('');
   const [inRoom, setInRoom] = useState(false);
   const [ready, setReady] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
   const fetched = useRef(false);
   const socket = getSocket();
@@ -42,10 +43,15 @@ export function LobbyPage() {
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
     if (!roomName.trim()) return;
-    const room = await createRoom(roomName, userId, nickname);
-    setShowCreate(false);
-    setRoomName('');
-    joinRoom(room.code);
+    setErrorMsg('');
+    try {
+      const room = await createRoom(roomName, userId, nickname);
+      setShowCreate(false);
+      setRoomName('');
+      joinRoom(room.code);
+    } catch (err) {
+      setErrorMsg((err as Error).message || '创建房间失败，请检查网络连接');
+    }
   };
 
   const joinRoom = (code: string) => {
@@ -224,6 +230,12 @@ export function LobbyPage() {
             color: '#94a3b8', cursor: 'pointer', fontSize: '14px',
           }}>↻ 刷新</button>
         </div>
+
+        {errorMsg && (
+          <div style={{ padding: '12px', marginBottom: '12px', borderRadius: '10px', background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', color: '#fca5a5', fontSize: '13px', textAlign: 'center' }}>
+            ⚠️ {errorMsg}
+          </div>
+        )}
 
         {showCreate && (
           <form onSubmit={handleCreate} style={{ ...boxStyle, marginBottom: '24px', display: 'flex', gap: '12px', alignItems: 'center' }}>
