@@ -1,8 +1,4 @@
 packages:
   - 'client'
-  - 'server'
 onlyBuiltDependencies:
-  - '@prisma/client'
-  - '@prisma/engines'
-  - prisma
   - esbuild
