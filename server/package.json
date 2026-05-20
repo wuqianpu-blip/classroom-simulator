@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "npx --yes tsx@4.19.0 watch src/index.ts",
+    "prestart": "npm install",
     "start": "npx --yes tsx@4.19.0 src/index.ts"
   },
   "dependencies": {
